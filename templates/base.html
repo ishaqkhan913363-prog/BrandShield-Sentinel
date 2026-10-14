@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}Sentinel{% endblock %} · BrandShield Sentinel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+<script defer src="{{ url_for('static', filename='app.js') }}"></script>
+</head>
+<body>
+{% if logged_in %}
+<div class="app-shell">
+<aside class="sidebar" id="sidebar">
+<a class="brandmark" href="{{ url_for('dashboard') }}"><span class="brand-icon">S</span><span><b>SENTINEL</b><small>RISK INTELLIGENCE</small></span></a>
+<div class="workspace"><span class="tiny-label">WORKSPACE</span><strong>BrandShield</strong><span class="live-dot"></span></div>
+<nav class="nav">
+<span class="nav-label">MONITOR</span>
+<a class="{{ 'active' if active_page=='dashboard' else '' }}" href="{{ url_for('dashboard') }}"><span>◫</span> Overview</a>
+<a class="{{ 'active' if active_page=='monitoring' else '' }}" href="{{ url_for('monitoring') }}"><span>⌁</span> Threat monitoring</a>
+<a class="{{ 'active' if active_page=='scam_network' else '' }}" href="{{ url_for('scam_network') }}"><span>⟷</span> Scam network</a>
+<a class="{{ 'active' if active_page=='campaigns' else '' }}" href="{{ url_for('campaigns') }}"><span>⟷</span> Campaign DNA</a>
+<span class="nav-label">INTELLIGENCE</span>
+<a class="{{ 'active' if active_page=='brand_profile' else '' }}" href="{{ url_for('brand_profile') }}"><span>◇</span> Brand profile</a>
+<a class="{{ 'active' if active_page=='evidence_vault' else '' }}" href="{{ url_for('evidence_vault') }}"><span>▤</span> Evidence vault</a>
+<a href="{{ url_for('import_candidates') }}"><span>⇧</span> Import candidates</a>
+<span class="nav-label">SYSTEM</span>
+<a class="{{ 'active' if active_page=='profile' else '' }}" href="{{ url_for('profile') }}"><span>◉</span> My profile</a>
+<a class="{{ 'active' if active_page=='settings' else '' }}" href="{{ url_for('settings') }}"><span>⚙</span> Settings</a>
+</nav>
+<div class="sidebar-bottom"><div class="system-status"><span class="status-pulse"></span><div><b>Local engine online</b><small>External connectors not configured</small></div></div>
+<div class="user-row"><a class="profile-link" href="{{ url_for('profile') }}" title="Open your profile"><span class="avatar">{{ (profile_user.full_name or profile_user.email)[0]|upper }}</span><span class="user-info"><b>{{ profile_user.full_name or 'Complete your profile' }}</b><small>{{ profile_user.email }}</small></span></a><form action="{{ url_for('logout') }}" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="icon-button" title="Sign out" aria-label="Sign out">⏻</button></form></div></div>
+</aside>
+<main class="main">
+<header class="topbar"><button class="menu-button" id="menuToggle" aria-label="Toggle navigation">☰</button><div class="breadcrumb">Workspace <span>/</span> <b>{% block crumb %}Overview{% endblock %}</b></div><div class="top-actions"><span class="environment"><i></i> LOCAL MVP</span><a class="top-icon" href="{{ url_for('settings') }}" title="Settings">⚙</a></div></header>
+{% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-stack">{% for category,message in messages %}<div class="flash {{ category }}">{{ message }}<button onclick="this.parentElement.remove()" aria-label="Dismiss">×</button></div>{% endfor %}</div>{% endif %}{% endwith %}
+<div class="page">{% block content %}{% endblock %}</div>
+<footer class="footer"><span>© 2026 BrandShield Sentinel</span><span>Similarity signals are for triage, not proof of abuse.</span></footer>
+</main></div>
+{% else %}{% block auth_content %}{% endblock %}{% endif %}
+</body></html>

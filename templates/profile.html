@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}My profile{% endblock %}
+{% block crumb %}My profile{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div>
+    <div class="eyebrow">ACCOUNT DETAILS</div>
+    <h1>My profile</h1>
+    <p>Manage the name shown in your BrandShield analyst workspace.</p>
+  </div>
+  <span class="page-mark">◉</span>
+</div>
+<div class="profile-layout">
+  <section class="panel">
+    <div class="profile-identity">
+      <div class="profile-avatar">{{ (user.full_name or user.email)[0]|upper }}</div>
+      <div><h2>{{ user.full_name or 'Analyst' }}</h2><p>{{ user.email }}</p></div>
+    </div>
+    <form method="post" class="form-stack profile-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label>Full name
+        <input name="full_name" value="{{ user.full_name }}" required maxlength="100"
+               autocomplete="name" placeholder="Your name">
+      </label>
+      <label>Email address
+        <input value="{{ user.email }}" readonly aria-describedby="emailHelp">
+        <small class="field-help" id="emailHelp">Email address is used for sign-in and cannot be changed here.</small>
+      </label>
+      <button class="btn primary">Save profile</button>
+    </form>
+  </section>
+  <section class="panel profile-session">
+    <div class="panel-head">
+      <div><h3>Account session</h3><p>Sign out of this local analyst session.</p></div>
+    </div>
+    <div class="session-detail"><span>Signed in as</span><b>{{ user.email }}</b></div>
+    <form action="{{ url_for('logout') }}" method="post"
+          data-confirm="Sign out of BrandShield Sentinel?">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="btn secondary">Sign out</button>
+    </form>
+    <p class="field-help">Signing out ends your current session. Your workspace data remains saved on this device.</p>
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,6 @@
+channel,name,url,developer,description,logo_match
+Social,Northstar Customer Help,https://social.example/northstar-customer-help,,Urgent account recovery and support,0
+App Store,Northstar Pay Rewards,https://store.example/apps/northstar-pay,Example Publisher,Claim reward after login,1
+Social,North Star Photography,https://social.example/north-star-photo,,Photography community page,0
+Social,Northstar Verification Desk,https://social.example/northstar-verify,,"DEMO ONLY: synthetic profile mentions payment destination https://pay.example/northstar/verify",1
+App Store,Northstar Rewards Companion,https://store.example/apps/northstar-rewards-demo,Demo Publisher,"DEMO ONLY: synthetic listing references payment destination https://pay.example/northstar/verify",1

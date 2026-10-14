@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Scam Network Intelligence{% endblock %}
+{% block crumb %}Scam Network Intelligence{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div>
+    <div class="eyebrow">RELATIONSHIP INTELLIGENCE · LOCAL EVIDENCE</div>
+    <h1>Scam Network Intelligence</h1>
+    <p>Explore candidate cases connected by shared, observed identifiers.</p>
+  </div>
+  <div class="heading-actions">
+    <a class="btn secondary" href="{{ url_for('export_network_csv') }}">↓ Export investigation</a>
+    <a class="btn primary" href="{{ url_for('import_candidates') }}">＋ Add observations</a>
+  </div>
+</div>
+<div class="notice">
+  <span class="notice-icon">i</span>
+  <div><b>Connections are leads, not attribution</b><span>Links are built from identifiers already entered or imported. Shared infrastructure, especially a domain, does not establish common ownership or wrongdoing. Cases marked false positive remain visible but do not contribute to links. No external sources are queried.</span></div>
+</div>
+<div class="network-summary" id="networkSummary" aria-live="polite">
+  <div class="network-stat"><span>Observed cases</span><b id="networkNodeCount">—</b></div>
+  <div class="network-stat"><span>Evidence-backed links</span><b id="networkLinkCount">—</b></div>
+  <div class="network-stat"><span>Linked cases</span><b id="networkLinkedCount">—</b></div>
+  <div class="network-stat"><span>Broad indicators suppressed</span><b id="networkSuppressedCount">—</b></div>
+</div>
+<div class="network-layout">
+  <section class="panel graph-panel">
+    <div class="panel-head">
+      <div><h3>Candidate relationship graph</h3><p>Select a case node to inspect its observations and connected evidence.</p></div>
+      <span class="mini-tag">EXPLAINABLE MATCHES</span>
+    </div>
+    <div class="graph-legend">
+      <span><i class="legend-dot critical"></i> Critical / high</span>
+      <span><i class="legend-dot medium"></i> Medium</span>
+      <span><i class="legend-dot low"></i> Low</span>
+      <span class="legend-line"></span> Shared identifier
+    </div>
+    <div class="network-graph-wrap" id="networkGraphWrap">
+      <svg id="networkGraph" role="img" aria-label="Graph of candidate cases connected by shared observed identifiers"></svg>
+      <div class="graph-message" id="networkMessage" role="status">Loading observed entities…</div>
+    </div>
+    <div class="network-footnote">Graph view shows at most 36 cases and the case list at most 150. High-volume shared indicators and excess links are capped to reduce common-infrastructure noise. Match strength starts at 94 for payment URLs, 90 for exact URLs/phones, 55 for domains and 48 for publishers, then adjusts slightly by provenance weight. Manual/CSV records use 0.60, demo records 0.35 and other sources 0.50. These are uncalibrated heuristics, not probabilities or source-trust ratings.<span id="networkCapMessage"></span></div>
+  </section>
+  <aside class="panel network-inspector" id="networkInspector" aria-live="polite">
+    <div class="panel-head"><div><div class="eyebrow">CASE INSPECTOR</div><h3 id="inspectorTitle">Select a case</h3><p id="inspectorSubtitle">Choose a graph node or case below to view its evidence.</p></div></div>
+    <div id="inspectorContent" class="inspector-content"><p class="muted">The graph only links exact shared identifiers. Review source context before drawing conclusions.</p></div>
+  </aside>
+</div>
+<section class="panel network-cases">
+  <div class="panel-head"><div><h3>Investigation cases</h3><p>Candidate records prioritized for relationship review.</p></div><span class="mini-tag" id="networkCaseListCount">LOADING</span></div>
+  <div class="network-case-list" id="networkCaseList"></div>
+</section>
+<script defer src="{{ url_for('static',filename='network.js') }}"></script>
+{% endblock %}
